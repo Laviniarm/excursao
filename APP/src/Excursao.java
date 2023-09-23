@@ -18,9 +18,10 @@ public class Excursao {
 
 		if (vagas <= 0) {
 			throw new Exception("Quantidade de vagas deve ser maior que 0!");
-
-			this.f = new File(new File(".\\" + id + ".csv").getCanonicalPath());
 		}
+
+		this.f = new File(new File(".\\" + id + ".csv").getCanonicalPath());
+
 	}
 
 	public void reservar(String cpf, String nome) throws Exception {
@@ -58,7 +59,7 @@ public class Excursao {
 			}
 
 			String[] parts = line.split(";");
-			if (Integer.parseInt(parts[0]) == cpf && parts[1].equals(nome)) {
+			if (parts[0].equals(cpf) && parts[1].equals(nome)) {
 				continue;
 			}
 			tempWriter.write(line + "\n");
@@ -94,7 +95,7 @@ public class Excursao {
 			}
 
 			String[] parts = line.split(";");
-			if (Integer.parseInt(parts[0]) == cpf) {
+			if (parts[0].equals(cpf)) {
 				continue;
 			}
 			tempWriter.write(line + "\n");
@@ -107,7 +108,7 @@ public class Excursao {
 		tempArq.renameTo(f);
 	}
 
-	public ArrayList<String> listarReservasPorCpf(String buscaCpf) {
+	public ArrayList<String> listarReservasPorCpf(String buscaCpf) throws Exception {
 		Scanner arquivo = new Scanner(f);
 		String linha, cpf, nome;
 		ArrayList<String> reservasPorCpf = new ArrayList<>();
@@ -118,16 +119,17 @@ public class Excursao {
 			partes = linha.split(";"); 
 			cpf = partes[0]; 
 			nome = partes[1]; 
-			if (buscaCpf == '') {
+			if (buscaCpf.equals(" ")) {
 				reservasPorCpf.add(cpf + "/" + nome);
-			} else if (cpf == buscacpf) {
+			} else if (cpf.equals(buscaCpf)) {
 				reservasPorCpf.add(cpf + "/" + nome);
 			}
 		}
+		arquivo.close();
 		return reservasPorCpf;
 	}
 
-	public ArrayList<String> listarReservasPorNome(String buscaNome) {	
+	public ArrayList<String> listarReservasPorNome(String buscaNome) throws Exception {	
 		Scanner arquivo = new Scanner(f);
 		String linha, cpf, nome;
 		ArrayList<String> reservasPorNome = new ArrayList<>();
@@ -138,10 +140,10 @@ public class Excursao {
 			partes = linha.split(";"); 
 			cpf = partes[0]; 
 			nome = partes[1]; 
-			if (buscaNome == '') {
-				reservasPorCpf.add(cpf + "/" + nome);
-			} else if (nome == buscaNome) {
-				reservasPorCpf.add(cpf + "/" + nome);
+			if (buscaNome.equals(" ")) {
+				reservasPorNome.add(cpf + "/" + nome);
+			} else if (nome.equals(buscaNome)) {
+				reservasPorNome.add(cpf + "/" + nome);
 			}
 		}
 		return reservasPorNome;
