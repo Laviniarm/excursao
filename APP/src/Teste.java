@@ -1,16 +1,17 @@
-
 public class Teste {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
-			Excursao e1 = new Excursao(01, 15, 5);
+			
+			Excursao e1 = new Excursao(1, 15, 5);
 			e1.reservar("123", "raiza");
 			e1.reservar("245", "lucas");
 			e1.reservar("245", "maria");
 			e1.reservar("123", "godofredo");
+			//e1.reservar("123", "godofredo");
 			
-			Excursao e2 = new Excursao(02, 25, 3);
+			Excursao e2 = new Excursao(2, 25, 3);
 			e2.reservar("456", "raizinha");
 			
 			e1.cancelarIndividualmente("123", "raiza");
