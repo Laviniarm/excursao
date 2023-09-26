@@ -1,9 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Excursao {
 	private ArrayList<String> reservas = new ArrayList<>();
@@ -30,7 +25,7 @@ public class Excursao {
 
 	}
 
-	public void reservar(String cpf, String nome) throws Exception {
+	public void criarReserva(String cpf, String nome) throws Exception {
 
 		if (vagas <= reservas.size()) {
 			throw new Exception("A reserva não pode ser feita, acabou as vagas da excursão");
@@ -38,7 +33,6 @@ public class Excursao {
 
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
-			String cpf1 = partes[0];
 			String nome1 = partes[1];
 			if (nome1.equals(nome)) {
 				throw new Exception("A reserva não pode ser feita, ja existe uma reserva com esse nome");
@@ -49,6 +43,14 @@ public class Excursao {
 		if (!cpf.equals("")) {
 			reservas.add(cpf + "/" + nome);
 		}
+	}
+	
+	public void cancelarReserva(String... arg) throws Exception {
+	    if (arg.length == 1) {
+	        cancelarCPF(arg[0]);
+	    } else if (arg.length == 2) {
+	        cancelarIndividualmente(arg[0], arg[1]);
+	    }
 	}
 
 	public void cancelarIndividualmente(String cpf, String nome) throws Exception {
@@ -86,7 +88,6 @@ public class Excursao {
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String cpf1 = partes[0];
-			String nome1 = partes[1];
 
 			if (cpf1.equals(cpf)) {
 				reservasPorCpf.add(reserva);
@@ -121,6 +122,10 @@ public class Excursao {
 				"Preço: " + preco +
 				"Vagas " + vagas +
 				"Total de reservas:" + reservas.size();
+	}
+	
+	public String toString() {
+		return "ID: " + id + " | Valor: " + preco + " | Vagas: " + vagas;
 	}
 
 }

@@ -1,7 +1,5 @@
 public class Teste {
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try {
 			
 			Excursao e1 = new Excursao(1, 15, 5);
@@ -26,4 +24,32 @@ public class Teste {
 		}
 	}
 
+			excursao.criarReserva("111", "joao");
+			excursao.criarReserva("222", "maria");
+			excursao.criarReserva("333", "jose");
+			excursao.criarReserva("333", "paulo");
+			excursao.criarReserva("333", "ana");
+			excursao.criarReserva("555", "antonio");
+			excursao.criarReserva("555", "joana");
+
+			System.out.println("\nlistar todas as reservas");
+			System.out.println(excursao.listarReservasPorCpf(""));
+			System.out.println("\nlistar as reservas por cpf");
+			System.out.println(excursao.listarReservasPorCpf("3"));
+			System.out.println("\nlistar as reservas por nome");
+			System.out.println(excursao.listarReservasPorNome("jo"));
+
+			excursao.cancelarReserva("555", "claudia");
+			excursao.cancelarReserva("333");
+
+			System.out.println("\nlistar todas as reservas");
+			System.out.println(excursao.listarReservasPorCpf(""));
+			System.out.println("\nexcursao:" + excursao);
+			System.out.println("\ntotal=" + excursao.calcularValorTotal());
+		} 
+		catch (Exception erro) {
+			System.out.println("-->" + erro.getMessage());
+		}
+
+	}
 }
