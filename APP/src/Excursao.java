@@ -18,9 +18,10 @@ public class Excursao {
 
 		if (vagas <= 0) {
 			throw new Exception("Quantidade de vagas deve ser maior que 0!");
-
-			this.f = new File(new File(".\\" + id + ".csv").getCanonicalPath());
 		}
+
+		this.f = new File(new File(".\\" + id + ".csv").getCanonicalPath());
+
 	}
 
 	public void reservar(String cpf, String nome) throws Exception {
