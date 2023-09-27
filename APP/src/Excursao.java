@@ -1,4 +1,8 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Excursao {
 	private ArrayList<String> reservas = new ArrayList<>();
@@ -27,8 +31,8 @@ public class Excursao {
 
 	public void criarReserva(String cpf, String nome) throws Exception {
 
-		if (vagas <= reservas.size()) {
-			throw new Exception("A reserva não pode ser feita, acabou as vagas da excursão");
+		if (vagas == reservas.size()) {
+			throw new Exception("A reserva não pode ser feita. Vagas esgotadas!");
 		}
 
 		for (String reserva : reservas) {
@@ -37,12 +41,10 @@ public class Excursao {
 			if (nome1.equals(nome)) {
 				throw new Exception("A reserva não pode ser feita, ja existe uma reserva com esse nome");
 			}
-
 		}
-
-		if (!cpf.equals("")) {
-			reservas.add(cpf + "/" + nome);
-		}
+		
+		reservas.add(cpf + "/" + nome);
+		salvar();
 	}
 	
 	public void cancelarReserva(String... arg) throws Exception {
@@ -60,6 +62,7 @@ public class Excursao {
 		} else {
 			throw new Exception(" Não existe reserva com esse cpf e nome para ser cancelada");
 		}
+		salvar();
 	}
 
 	public void cancelarCPF(String cpf) throws Exception {
@@ -76,6 +79,7 @@ public class Excursao {
 		}
 
 		reservas.removeAll(reservasARemover);
+		salvar();
 
 		if (reservasARemover.size() == 0) {
 			throw new Exception("Não existe reserva com esse cpf, por isso não poderá ser removido");
@@ -116,16 +120,39 @@ public class Excursao {
 	public double calcularValorTotal() {
 		return preco * reservas.size();
 	}
-
-	public String toStrig(){
-		return "Codigo: " + id +
-				"Preço: " + preco +
-				"Vagas " + vagas +
-				"Total de reservas:" + reservas.size();
+	
+	public void salvar() throws Exception {
+		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
+		FileWriter arquivo = new FileWriter(f, false);
+		arquivo.write("Valor por pessoa: " + preco + "\nQuantidade de vagas: " + vagas + "\nReservas:\n");
+		for (String reserva : reservas) {
+			arquivo.write(reserva + "\n");
+		}
+		arquivo.close();
 	}
 	
-	public String toString() {
-		return "ID: " + id + " | Valor: " + preco + " | Vagas: " + vagas;
+	public void carregar() throws Exception {
+		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
+		Scanner arquivo = new Scanner(f);
+		String linha, cpf, nome;
+		String[] partes;
+		String valor = arquivo.nextLine();
+		String quantidade = arquivo.nextLine();
+		String titulo = arquivo.nextLine();
+		while (arquivo.hasNextLine()) {
+			linha = arquivo.nextLine();
+			partes = linha.split("/");
+			cpf = partes[0];
+			nome = partes[1];
+			reservas.add(cpf + "/" + nome);
+		}
+	}
+
+	public String toString(){
+		return "\nCódigo: " + id +
+				"\nPreço: " + preco +
+				"\nVagas: " + vagas +
+				"\nTotal de reservas: " + reservas.size();
 	}
 
 }

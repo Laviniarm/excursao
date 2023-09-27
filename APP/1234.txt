@@ -1,0 +1,6 @@
+Valor por pessoa: 100.0
+Quantidade de vagas: 20
+Reservas:
+111/joao
+222/maria
+555/joana
