@@ -16,9 +16,7 @@ public class Excursao {
 		this.vagas = vagas;
 		
 		try {
-	        FileWriter arq = new FileWriter("./excursoes.txt", true);
-	        arq.write(Integer.toString(id) + "\n");
-	        arq.close();
+			salvar();
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
@@ -138,8 +136,10 @@ public class Excursao {
 		Scanner arquivo = new Scanner(f);
 		String linha, cpf, nome;
 		String[] partes;
-		String valor = arquivo.nextLine();
-		String quantidade = arquivo.nextLine();
+		String[] valor = arquivo.nextLine().split(" ");
+		this.preco = Double.parseDouble(valor[3]);
+		String[] quantidade = arquivo.nextLine().split(" ");
+		this.vagas = Integer.parseInt(quantidade[3]);
 		String titulo = arquivo.nextLine();
 		while (arquivo.hasNextLine()) {
 			linha = arquivo.nextLine();

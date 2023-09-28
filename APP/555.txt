@@ -1,3 +1,6 @@
 Valor por pessoa: 10.0
 Quantidade de vagas: 10
 Reservas:
+123/raiza
+156/lucas
+552/mariquinha
