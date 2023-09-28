@@ -1,6 +1,9 @@
 Valor por pessoa: 100.0
 Quantidade de vagas: 20
 Reservas:
-111/joao
 222/maria
+333/jose
+333/paulo
+333/ana
+555/antonio
 555/joana
