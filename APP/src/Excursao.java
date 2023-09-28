@@ -14,6 +14,14 @@ public class Excursao {
 		this.id = id;
 		this.preco = preco;
 		this.vagas = vagas;
+		
+		try {
+	        FileWriter arq = new FileWriter("./excursoes.txt", true);
+	        arq.write(Integer.toString(id) + "\n");
+	        arq.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 
 		if (vagas <= 0) {
 			throw new Exception("Quantidade de vagas deve ser maior que 0!");
@@ -24,9 +32,8 @@ public class Excursao {
 		this.id = id;
 		
 		if (id <= 0) {
-			throw new Exception("O id deve ser um numero maior que 0!");
+			throw new Exception("O código deve ser um número maior que 0!");
 		}
-
 	}
 
 	public void criarReserva(String cpf, String nome) throws Exception {
@@ -39,7 +46,7 @@ public class Excursao {
 			String[] partes = reserva.split("/");
 			String nome1 = partes[1];
 			if (nome1.equals(nome)) {
-				throw new Exception("A reserva não pode ser feita, ja existe uma reserva com esse nome");
+				throw new Exception("A reserva não pode ser feita. Já existe uma reserva com esse nome.");
 			}
 		}
 		
@@ -47,46 +54,39 @@ public class Excursao {
 		salvar();
 	}
 	
-	public void cancelarReserva(String... arg) throws Exception {
-	    if (arg.length == 1) {
-	        cancelarCPF(arg[0]);
-	    } else if (arg.length == 2) {
-	        cancelarIndividualmente(arg[0], arg[1]);
-	    }
-	}
-
-	public void cancelarIndividualmente(String cpf, String nome) throws Exception {
+	public void cancelarReserva(String cpf, String nome) throws Exception {
 		String pessoa = (cpf + "/" + nome);
 		if(reservas.contains(pessoa)) {
 			reservas.remove(pessoa);
 		} else {
-			throw new Exception(" Não existe reserva com esse cpf e nome para ser cancelada");
+			throw new Exception("Não existe reserva com esse cpf e esse nome.");
 		}
 		salvar();
 	}
 
-	public void cancelarCPF(String cpf) throws Exception {
-
+	public void cancelarReserva(String cpf) throws Exception {
 		ArrayList<String> reservasARemover = new ArrayList<>();
 
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String cpf1 = partes[0];
-
 			if (cpf1.equals(cpf)) {
 				reservasARemover.add(reserva);
 			}
 		}
-
+		
 		reservas.removeAll(reservasARemover);
-		salvar();
-
+		
 		if (reservasARemover.size() == 0) {
-			throw new Exception("Não existe reserva com esse cpf, por isso não poderá ser removido");
+			throw new Exception("Não existe reserva com esse cpf.");
 		}
 	}
 
 	public ArrayList<String> listarReservasPorCpf(String cpf)  {
+		if (cpf.equals("")) {
+			return reservas;
+		}
+		
 		ArrayList <String> reservasPorCpf = new ArrayList<>();
 
 		for (String reserva : reservas) {
@@ -102,9 +102,11 @@ public class Excursao {
 	}
 
 	public ArrayList<String> listarReservasPorNome(String nome)  {
-		
+		if (nome.equals("")) {
+			return reservas;
+		}
 		ArrayList <String> reservasPorNome = new ArrayList<>();
-
+		
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String nome1 = partes[1];
