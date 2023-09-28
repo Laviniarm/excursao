@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -92,7 +91,7 @@ public class APPExcursao {
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.setTitle("Plataforma de Excursões");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 425, 221);
+		frame.setBounds(100, 100, 425, 228);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -125,13 +124,27 @@ public class APPExcursao {
 		button_1 = new JButton("Reservar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					String cpf = JOptionPane.showInputDialog("Digite seu cpf:");
+					String nome = JOptionPane.showInputDialog("Digite seu nome:");
+					excursao.criarReserva(cpf, nome);
+					//label.setText("Reserva concluida com sucesso");
+					button_1.doClick();	
+				}
+				catch(Exception ex) {
+					label.setText(ex.getMessage());
+				}
 			}
 		});
 		button_1.setBounds(10, 76, 139, 23);
 		frame.getContentPane().add(button_1);
 		
 		button_2 = new JButton("Cancelar Reserva");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
 		button_2.setBounds(10, 110, 139, 23);
 		frame.getContentPane().add(button_2);
 		
