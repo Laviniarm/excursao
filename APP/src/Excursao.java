@@ -11,53 +11,55 @@ public class Excursao {
 	private int vagas;
 
 	public Excursao(int id, double preco, int vagas) throws Exception {
+		if (vagas <= 0 && id <= 0 && preco <= 0) {
+			throw new Exception("Os valores de id, preco e vagas devem ser maior 0!");
+		}
 		this.id = id;
 		this.preco = preco;
 		this.vagas = vagas;
-		
+
 		try {
 			salvar();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
-		if (vagas <= 0) {
-			throw new Exception("Quantidade de vagas deve ser maior que 0!");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public Excursao(int id) throws Exception {
-		this.id = id;
-		
+
 		if (id <= 0) {
 			throw new Exception("O código deve ser um número maior que 0!");
 		}
+
+		this.id = id;
+
 	}
 
 	public void criarReserva(String cpf, String nome) throws Exception {
 
 		if (vagas == reservas.size()) {
-			throw new Exception("A reserva não pode ser feita. Vagas esgotadas!");
+			throw new Exception("Reserva não realizada. Vagas esgotadas!");
 		}
 
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String nome1 = partes[1];
 			if (nome1.equals(nome)) {
-				throw new Exception("A reserva não pode ser feita. Já existe uma reserva com esse nome.");
+				throw new Exception("Reserva não realizada pois existe uma reserva com esse nome.");
 			}
 		}
-		
+
 		reservas.add(cpf + "/" + nome);
 		salvar();
 	}
-	
+
 	public void cancelarReserva(String cpf, String nome) throws Exception {
 		String pessoa = (cpf + "/" + nome);
-		if(reservas.contains(pessoa)) {
+		if (reservas.contains(pessoa)) {
 			reservas.remove(pessoa);
 		} else {
-			throw new Exception("Não existe reserva com esse cpf e esse nome.");
+			throw new Exception("Não existe reserva com esse cpf e nome.");
 		}
 		salvar();
 	}
@@ -72,26 +74,26 @@ public class Excursao {
 				reservasARemover.add(reserva);
 			}
 		}
-		
+
 		reservas.removeAll(reservasARemover);
-		
+
 		if (reservasARemover.size() == 0) {
-			throw new Exception("Não existe reserva com esse cpf.");
+			throw new Exception("Não existem reservas com esse cpf.");
 		}
 	}
 
-	public ArrayList<String> listarReservasPorCpf(String cpf)  {
+	public ArrayList<String> listarReservasPorCpf(String cpf) {
 		if (cpf.equals("")) {
 			return reservas;
 		}
-		
-		ArrayList <String> reservasPorCpf = new ArrayList<>();
+
+		ArrayList<String> reservasPorCpf = new ArrayList<>();
 
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String cpf1 = partes[0];
 
-			if (cpf1.equals(cpf)) {
+			if (cpf1.contains(cpf)) {
 				reservasPorCpf.add(reserva);
 			}
 
@@ -99,17 +101,17 @@ public class Excursao {
 		return reservasPorCpf;
 	}
 
-	public ArrayList<String> listarReservasPorNome(String nome)  {
+	public ArrayList<String> listarReservasPorNome(String nome) {
 		if (nome.equals("")) {
 			return reservas;
 		}
-		ArrayList <String> reservasPorNome = new ArrayList<>();
-		
+		ArrayList<String> reservasPorNome = new ArrayList<>();
+
 		for (String reserva : reservas) {
 			String[] partes = reserva.split("/");
 			String nome1 = partes[1];
 
-			if (nome1.equals(nome)) {
+			if (nome1.contains(nome)) {
 				reservasPorNome.add(reserva);
 			}
 
@@ -120,9 +122,9 @@ public class Excursao {
 	public double calcularValorTotal() {
 		return preco * reservas.size();
 	}
-	
-	//so pro commit
-	
+
+	// so pro commit
+
 	public void salvar() throws Exception {
 		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
 		FileWriter arquivo = new FileWriter(f, false);
@@ -132,7 +134,7 @@ public class Excursao {
 		}
 		arquivo.close();
 	}
-	
+
 	public void carregar() throws Exception {
 		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
 		Scanner arquivo = new Scanner(f);
@@ -152,11 +154,9 @@ public class Excursao {
 		}
 	}
 
-	public String toString(){
-		return "\nCódigo: " + id +
-				"\nPreço: " + preco +
-				"\nVagas: " + vagas +
-				"\nTotal de reservas: " + reservas.size();
+	public String toString() {
+		return "\nCódigo: " + id + "\nPreço: " + preco + "\nVagas: " + vagas + "\nTotal de reservas: "
+				+ reservas.size();
 	}
 
 }

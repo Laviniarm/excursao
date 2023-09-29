@@ -29,6 +29,7 @@ public class APPExcursao {
 	private JTextArea textArea;
 	private JPopupMenu popupMenu;
 	private Excursao excursao;
+	private JButton button_5;
 
 	/**
 	 * Launch the application.
@@ -99,7 +100,7 @@ public class APPExcursao {
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.setTitle("Plataforma de Excursões");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 425, 228);
+		frame.setBounds(100, 100, 517, 314);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -135,7 +136,7 @@ public class APPExcursao {
 				}
 			}
 		});
-		button.setBounds(10, 11, 190, 23);
+		button.setBounds(10, 11, 139, 23);
 		frame.getContentPane().add(button);
 
 		button_1 = new JButton("Reservar");
@@ -171,7 +172,7 @@ public class APPExcursao {
 				popupMenu.show(button_3, 0, button_3.getHeight());
 			}
 		});
-		button_3.setBounds(209, 11, 190, 23);
+		button_3.setBounds(185, 11, 139, 23);
 		frame.getContentPane().add(button_3);
 
 		button_4 = new JButton("Listar Reservas");
@@ -179,7 +180,7 @@ public class APPExcursao {
 		frame.getContentPane().add(button_4);
 
 		label = new JLabel("valor total aqui");
-		label.setBounds(272, 45, 127, 20);
+		label.setBounds(10, 195, 364, 20);
 		frame.getContentPane().add(label);
 
 		label_1 = new JLabel("nome da excursao aqui");
@@ -187,7 +188,16 @@ public class APPExcursao {
 		frame.getContentPane().add(label_1);
 
 		textArea = new JTextArea();
-		textArea.setBounds(159, 75, 240, 92);
+		textArea.setBounds(159, 75, 332, 92);
 		frame.getContentPane().add(textArea);
+		
+		button_5 = new JButton("Recuperar Excursão");
+		button_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
+		button_5.setBounds(352, 11, 139, 23);
+		frame.getContentPane().add(button_5);
 	}
 }
