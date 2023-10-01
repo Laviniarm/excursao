@@ -11,7 +11,7 @@ public class Excursao {
 	private int vagas;
 
 	public Excursao(int id, double preco, int vagas) throws Exception {
-		if (vagas <= 0 && id <= 0 && preco <= 0) {
+		if ((vagas <= 0) || (id <= 0) || (preco <= 0)) {
 			throw new Exception("Os valores de id, preco e vagas devem ser maior 0!");
 		}
 		this.id = id;
@@ -65,7 +65,7 @@ public class Excursao {
 		if (reservas.contains(pessoa)) {
 			reservas.remove(pessoa);
 		} else {
-			throw new Exception("Não existe reserva com esse cpf e nome.");
+			throw new Exception("Não existe reserva com esse cpf e/ou nome.");
 		}
 		salvar();
 	}

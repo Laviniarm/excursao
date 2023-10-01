@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class APPExcursao {
 
@@ -27,10 +28,12 @@ public class APPExcursao {
 	private JLabel label_1;
 	private JTextArea textArea;
 	private JPopupMenu popupMenuAbrir;
+	private JPopupMenu popupMenuListar;
 	private JPopupMenu popupMenuCancelar;
 	private Excursao excursao;
 	private JButton button_6;
 	private JLabel label_2;
+	private JButton button_4;
 
 	/**
 	 * Launch the application.
@@ -81,6 +84,7 @@ public class APPExcursao {
 								button_1.setEnabled(true);
 								button_2.setEnabled(true);
 								button_6.setEnabled(true);
+								button_4.setEnabled(true);
 								String codigo = excursao.toString();
 								String[] partes = codigo.split("\n");
 								label_1.setText(partes[0]);
@@ -104,10 +108,13 @@ public class APPExcursao {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Century", Font.PLAIN, 12));
+		frame.getContentPane().setBackground(new Color(243, 245, 245));
+		frame.setBackground(new Color(255, 255, 255));
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.setTitle("Plataforma de Excursões");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 329, 284);
+		frame.setBounds(100, 100, 332, 282);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -116,6 +123,7 @@ public class APPExcursao {
 		carregarItensMenu();
 
 		button = new JButton("Criar Excursão");
+		button.setFont(new Font("Century", Font.PLAIN, 12));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -146,38 +154,46 @@ public class APPExcursao {
 		frame.getContentPane().add(button);
 
 		button_1 = new JButton("Reservar");
+		button_1.setFont(new Font("Century", Font.PLAIN, 12));
 		button_1.setEnabled(false);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String cpf = JOptionPane.showInputDialog("Digite seu cpf:");
-					String nome = JOptionPane.showInputDialog("Digite seu nome:");
-					excursao.criarReserva(cpf, nome);
-					label.setText("Valor total: " + excursao.calcularValorTotal());
-					label_2.setText("Total de reservas: " + excursao.tamanho());
-					JOptionPane.showMessageDialog(null, "Reserva realizada com sucesso!");
+					String cpf, nome;
+						cpf = JOptionPane.showInputDialog("Digite seu CPF:");
+						nome = JOptionPane.showInputDialog("Digite seu nome:");
+					
+					if ((cpf != null && !cpf.isBlank()) && (nome !=  null && !nome.isBlank())) {
+						excursao.criarReserva(cpf, nome);
+						label.setText("Valor total: " + excursao.calcularValorTotal());
+						label_2.setText("Total de reservas: " + excursao.tamanho());
+						JOptionPane.showMessageDialog(null, "Reserva realizada com sucesso!");
+					} else {
+	                    throw new IllegalArgumentException("CPF e/ou nome não podem ser vazios.");
+	                }	
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 			}
 		});
-		button_1.setBounds(10, 107, 139, 23);
+		button_1.setBounds(10, 76, 139, 23);
 		frame.getContentPane().add(button_1);
 
 		button_2 = new JButton("Cancelar");
+		button_2.setFont(new Font("Century", Font.PLAIN, 12));
 		button_2.setEnabled(false);
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				popupMenuCancelar = new JPopupMenu();
-				JMenuItem menuItemCPF = new JMenuItem("Por CPF");
+				JMenuItem menuItemCPF = new JMenuItem("Em grupo");
 				popupMenuCancelar.add(menuItemCPF);
-				JMenuItem menuItemNome = new JMenuItem("Por Nome");
+				JMenuItem menuItemNome = new JMenuItem("Individual");
 				popupMenuCancelar.add(menuItemNome);
 				menuItemCPF.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							String cpf = JOptionPane.showInputDialog("Digite o cpf da reserva que deseja cancelar:");
+							String cpf = JOptionPane.showInputDialog("Digite o cpf das reservas que deseja cancelar:");
 							excursao.cancelarReserva(cpf);
 							label_2.setText("Total de reservas: " + excursao.tamanho());
 							label.setText("Valor total: " + excursao.calcularValorTotal());
@@ -203,10 +219,11 @@ public class APPExcursao {
 
 			}
 		});
-		button_2.setBounds(10, 141, 139, 23);
+		button_2.setBounds(10, 110, 139, 23);
 		frame.getContentPane().add(button_2);
 
 		button_3 = new JButton("Abrir Excursão");
+		button_3.setFont(new Font("Century", Font.PLAIN, 12));
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				popupMenuAbrir.show(button_3, 0, button_3.getHeight());
@@ -216,28 +233,90 @@ public class APPExcursao {
 		frame.getContentPane().add(button_3);
 
 		label = new JLabel("");
-		label.setBounds(10, 209, 139, 20);
+		label.setFont(new Font("Century Gothic", Font.BOLD, 12));
+		label.setBounds(10, 212, 139, 20);
 		frame.getContentPane().add(label);
 
 		label_1 = new JLabel();
+		label_1.setFont(new Font("Century Gothic", Font.BOLD, 12));
 		label_1.setBounds(10, 45, 288, 20);
 		frame.getContentPane().add(label_1);
 
 		textArea = new JTextArea();
-		textArea.setBounds(159, 110, 139, 119);
+		textArea.setBounds(159, 75, 139, 126);
 		frame.getContentPane().add(textArea);
 
 		button_6 = new JButton("Listar");
+		button_6.setFont(new Font("Century", Font.PLAIN, 12));
+		button_6.setEnabled(false);
 		button_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				popupMenuListar = new JPopupMenu();
+				JMenuItem menuItemC = new JMenuItem("Por cpf");
+				popupMenuListar.add(menuItemC);
+				JMenuItem menuItemN = new JMenuItem("Por Nome");
+				popupMenuListar.add(menuItemN);
+
+				menuItemC.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							String cpf1 = JOptionPane.showInputDialog("Digite numeros do cpf que deseja listar:");
+							ArrayList<String> lista = excursao.listarReservasPorCpf(cpf1);
+							textArea.setText("");
+							for (String s : lista)
+								textArea.append(s + "\n");
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage());
+						}
+					}
+				});
+
+				menuItemN.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							String nome1 = JOptionPane.showInputDialog("Digite o nome que deseja listar:");
+							ArrayList<String> listaN = excursao.listarReservasPorNome(nome1);
+							textArea.setText("");
+							for (String s : listaN)
+								textArea.append(s + "\n");
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage());
+						}
+					}
+				});
+
+				popupMenuListar.show(button_6, 0, button_6.getHeight());
+
 			}
 		});
+
 		button_6.setEnabled(false);
-		button_6.setBounds(10, 175, 139, 23);
+		button_6.setBounds(10, 144, 139, 23);
 		frame.getContentPane().add(button_6);
 
 		label_2 = new JLabel();
 		label_2.setBounds(10, 76, 288, 20);
 		frame.getContentPane().add(label_2);
+		
+		
+		button_4 = new JButton("Listar todos");
+		button_4.setFont(new Font("Century", Font.PLAIN, 12));
+		button_4.setEnabled(false);
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<String> listaTodos= excursao.listarReservasPorNome("");
+					textArea.setText("");
+					for (String s : listaTodos)
+						textArea.append(s + "\n");
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+			}
+		});
+			
+		button_4.setEnabled(false);
+		button_4.setBounds(10, 178, 139, 23);
+		frame.getContentPane().add(button_4);
 	}
 }

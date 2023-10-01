@@ -1,0 +1,4 @@
+Valor por pessoa: 50.0
+Quantidade de vagas: 10
+Reservas:
+789456/raiza
