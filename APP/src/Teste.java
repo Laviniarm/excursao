@@ -12,24 +12,24 @@ public class Teste {
 			Excursao e2 = new Excursao(2, 25, 3);
 			e2.criarReserva("456", "raizinha");
 			
-			e1.cancelarIndividualmente("123", "raiza");
-			e1.cancelarCPF("245");
+			e1.cancelarReserva("123", "raiza");
+			e1.cancelarReserva("245");
 			
 			System.out.println(e1.listarReservasPorCpf("123"));
 			System.out.println(e2.listarReservasPorNome("raizinha"));
 
 
 			e1.criarReserva("111", "joao");
-			excursao.criarReserva("222", "maria");
-			excursao.criarReserva("333", "jose");
-			excursao.criarReserva("333", "paulo");
-			excursao.criarReserva("333", "ana");
-			excursao.criarReserva("555", "antonio");
-			excursao.criarReserva("555", "joana");
+			e1.criarReserva("222", "maria");
+			e1.criarReserva("333", "jose");
+			e1.criarReserva("333", "paulo");
+			e1.criarReserva("333", "ana");
+			e1.criarReserva("555", "antonio");
+			e1.criarReserva("555", "joana");
 
 			System.out.println("\nlistar todas as reservas");
-			System.out.println(excursao.listarReservasPorCpf(""));
-			System.out.println("\ntotal=" + excursao.calcularValorTotal());
+			System.out.println(e1.listarReservasPorCpf(""));
+			System.out.println("\ntotal=" + e1.calcularValorTotal());
 		}
 		catch (Exception erro) {
 			System.out.println("-->" + erro.getMessage());

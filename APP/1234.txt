@@ -1,3 +1,0 @@
-Valor por pessoa: 10.0
-Quantidade de vagas: 10
-Reservas:

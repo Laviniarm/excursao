@@ -33,6 +33,12 @@ public class Excursao {
 		}
 
 		this.id = id;
+		
+		try {
+			carregar();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -76,6 +82,7 @@ public class Excursao {
 		}
 
 		reservas.removeAll(reservasARemover);
+		salvar();
 
 		if (reservasARemover.size() == 0) {
 			throw new Exception("Não existem reservas com esse cpf.");
@@ -128,6 +135,7 @@ public class Excursao {
 	public void salvar() throws Exception {
 		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
 		FileWriter arquivo = new FileWriter(f, false);
+		
 		arquivo.write("Valor por pessoa: " + preco + "\nQuantidade de vagas: " + vagas + "\nReservas:\n");
 		for (String reserva : reservas) {
 			arquivo.write(reserva + "\n");
@@ -140,22 +148,28 @@ public class Excursao {
 		Scanner arquivo = new Scanner(f);
 		String linha, cpf, nome;
 		String[] partes;
+		
 		String[] valor = arquivo.nextLine().split(" ");
-		this.preco = Double.parseDouble(valor[3]);
+		preco = Double.parseDouble(valor[3]);
+
 		String[] quantidade = arquivo.nextLine().split(" ");
-		this.vagas = Integer.parseInt(quantidade[3]);
+		vagas = Integer.parseInt(quantidade[3]);
+		
 		String titulo = arquivo.nextLine();
+		
+		reservas.clear();
 		while (arquivo.hasNextLine()) {
 			linha = arquivo.nextLine();
-			partes = linha.split("/");
-			cpf = partes[0];
-			nome = partes[1];
-			reservas.add(cpf + "/" + nome);
+			reservas.add(linha);
 		}
+	}
+	
+	public int tamanho() {
+		return reservas.size();
 	}
 
 	public String toString() {
-		return "\nCódigo: " + id + "\nPreço: " + preco + "\nVagas: " + vagas + "\nTotal de reservas: "
+		return "Código: " + id + " | Preço: " + preco + " | Vagas: " + vagas + "\nTotal de reservas: "
 				+ reservas.size();
 	}
 
