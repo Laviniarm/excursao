@@ -20,10 +20,9 @@ public class Excursao {
 
 		try {
 			salvar();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			throw new Exception("Por favor, inserir um número.");
 		}
-
 	}
 
 	public Excursao(int id) throws Exception {
@@ -33,13 +32,17 @@ public class Excursao {
 		}
 
 		this.id = id;
-		
+
 		try {
 			carregar();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			throw new Exception("Por favor, inserir um número.");
 		}
 
+	}
+
+	public static boolean saoDigitos(String input) {
+		return input.matches("\\d+");
 	}
 
 	public void criarReserva(String cpf, String nome) throws Exception {
@@ -48,16 +51,21 @@ public class Excursao {
 			throw new Exception("Reserva não realizada. Vagas esgotadas!");
 		}
 
-		for (String reserva : reservas) {
-			String[] partes = reserva.split("/");
-			String nome1 = partes[1];
-			if (nome1.equals(nome)) {
-				throw new Exception("Reserva não realizada pois existe uma reserva com esse nome.");
+		if (saoDigitos(cpf)) {
+			for (String reserva : reservas) {
+				String[] partes = reserva.split("/");
+				String nome1 = partes[1];
+				if (nome1.equals(nome)) {
+					throw new Exception("Reserva não realizada pois existe uma reserva com esse nome.");
+				}
 			}
+
+			reservas.add(cpf + "/" + nome);
+			salvar();
+		} else {
+			throw new Exception("CPF deve conter apenas números.");
 		}
 
-		reservas.add(cpf + "/" + nome);
-		salvar();
 	}
 
 	public void cancelarReserva(String cpf, String nome) throws Exception {
@@ -133,9 +141,9 @@ public class Excursao {
 	// so pro commit
 
 	public void salvar() throws Exception {
-		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
+		File f = new File(new File(".\\src\\excursoes\\" + id + ".txt").getCanonicalPath());
 		FileWriter arquivo = new FileWriter(f, false);
-		
+
 		arquivo.write("Valor por pessoa: " + preco + "\nQuantidade de vagas: " + vagas + "\nReservas:\n");
 		for (String reserva : reservas) {
 			arquivo.write(reserva + "\n");
@@ -144,26 +152,26 @@ public class Excursao {
 	}
 
 	public void carregar() throws Exception {
-		File f = new File(new File(".\\" + id + ".txt").getCanonicalPath());
+		File f = new File(new File(".\\src\\excursoes\\" + id + ".txt").getCanonicalPath());
 		Scanner arquivo = new Scanner(f);
 		String linha, cpf, nome;
 		String[] partes;
-		
+
 		String[] valor = arquivo.nextLine().split(" ");
 		preco = Double.parseDouble(valor[3]);
 
 		String[] quantidade = arquivo.nextLine().split(" ");
 		vagas = Integer.parseInt(quantidade[3]);
-		
+
 		String titulo = arquivo.nextLine();
-		
+
 		reservas.clear();
 		while (arquivo.hasNextLine()) {
 			linha = arquivo.nextLine();
 			reservas.add(linha);
 		}
 	}
-	
+
 	public int tamanho() {
 		return reservas.size();
 	}

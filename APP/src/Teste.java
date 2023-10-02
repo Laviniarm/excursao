@@ -1,38 +1,32 @@
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
 public class Teste {
-	public static void main(String[] args) {
-		try {
-			
-			Excursao e1 = new Excursao(1, 15, 5);
-			e1.criarReserva("123", "raiza");
-			e1.criarReserva("245", "lucas");
-			e1.criarReserva("245", "maria");
-			e1.criarReserva("123", "godofredo");
-			//e1.reservar("123", "godofredo");
-			
-			Excursao e2 = new Excursao(2, 25, 3);
-			e2.criarReserva("456", "raizinha");
-			
-			e1.cancelarReserva("123", "raiza");
-			e1.cancelarReserva("245");
-			
-			System.out.println(e1.listarReservasPorCpf("123"));
-			System.out.println(e2.listarReservasPorNome("raizinha"));
 
-
-			e1.criarReserva("111", "joao");
-			e1.criarReserva("222", "maria");
-			e1.criarReserva("333", "jose");
-			e1.criarReserva("333", "paulo");
-			e1.criarReserva("333", "ana");
-			e1.criarReserva("555", "antonio");
-			e1.criarReserva("555", "joana");
-
-			System.out.println("\nlistar todas as reservas");
-			System.out.println(e1.listarReservasPorCpf(""));
-			System.out.println("\ntotal=" + e1.calcularValorTotal());
-		}
-		catch (Exception erro) {
-			System.out.println("-->" + erro.getMessage());
-		}
-	}
+    public static void main(String[] args) throws Exception {
+    	Excursao e1 = new Excursao(1,20,10);
+    	e1.criarReserva("123", "raiza");
+    	
+    	ArrayList<String> excursoes = new ArrayList<>();
+		
+		File pasta = new File(".\\src\\excursoes");
+		
+		if (pasta.isDirectory()) {
+			System.out.println("ok1");
+            String[] nomesArquivos = pasta.list();
+            System.out.println("ok2");
+            
+            for (String nome : nomesArquivos) {
+            	String[] partes = nome.split(".txt");
+            	String codigo = partes[0];
+            	excursoes.add(codigo);
+            	System.out.println("ok3");
+            }
+            System.out.println(excursoes);
+        } else {
+        	JOptionPane.showMessageDialog(null, "O caminho especificado não é uma pasta ou não existe.");
+        }
+    }
 }

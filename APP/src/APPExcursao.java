@@ -58,49 +58,60 @@ public class APPExcursao {
 		initialize();
 	}
 
-	public boolean arquivoExiste() {
-		return (new File(".\\excursoes.txt")).exists();
+	
+	public void setarLabels() {
+		label_2.setText("Total de reservas: " + excursao.tamanho());
+		label.setText("Valor total: " + excursao.calcularValorTotal());
+		button_4.doClick();
 	}
 
 	public void carregarItensMenu() {
-		if (arquivoExiste()) {
-			try {
-				ArrayList<String> excursoes = new ArrayList<>();
-				FileReader arq = new FileReader(".\\excursoes.txt");
-				Scanner arquivo = new Scanner(arq);
-				String linha;
-				while (arquivo.hasNextLine()) {
-					linha = arquivo.nextLine();
-					excursoes.add(linha);
-				}
-				for (String item : excursoes) {
-					JMenuItem menuItem = new JMenuItem(item);
-					menuItem.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							try {
-								int codigoExcursao = Integer.parseInt(item);
-								excursao = new Excursao(codigoExcursao);
-								excursao.carregar();
-								button_1.setEnabled(true);
-								button_2.setEnabled(true);
-								button_6.setEnabled(true);
-								button_4.setEnabled(true);
-								String codigo = excursao.toString();
-								String[] partes = codigo.split("\n");
-								label_1.setText(partes[0]);
-								label_2.setText("Total de reservas: " + excursao.tamanho());
-								label.setText("Valor total: " + excursao.calcularValorTotal());
-							} catch (Exception ex) {
-								JOptionPane.showMessageDialog(null, ex.getMessage());
-							}
+		try {
+			ArrayList<String> excursoes = new ArrayList<>();
+			
+			File pasta = new File(".\\src\\excursoes");
+			
+			if (pasta.isDirectory()) {
+	            String[] nomesArquivos = pasta.list();
+	            
+	            for (String nome : nomesArquivos) {
+	            	String[] partes = nome.split(".txt");
+	            	String codigo = partes[0];
+	            	excursoes.add(codigo);
+	            }
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "O caminho especificado não é uma pasta ou não existe.");
+	        }
+			
+			for (String item : excursoes) {
+				JMenuItem menuItem = new JMenuItem(item);
+				menuItem.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							int codigoExcursao = Integer.parseInt(item);
+							excursao = new Excursao(codigoExcursao);
+							excursao.carregar();
+							button_1.setEnabled(true);
+							button_2.setEnabled(true);
+							button_6.setEnabled(true);
+							button_4.setEnabled(true);
+							String codigo = excursao.toString();
+							String[] partes = codigo.split("\n");
+							label_1.setText(partes[0]);
+							label_2.setText("Total de reservas: " + excursao.tamanho());
+							label.setText("Valor total: " + excursao.calcularValorTotal());
+							textArea.setText("");
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage());
 						}
-					});
-					popupMenuAbrir.add(menuItem);
-				}
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, ex.getMessage());
+					}
+				});
+				popupMenuAbrir.add(menuItem);
 			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
+
 	}
 
 	/**
@@ -134,19 +145,10 @@ public class APPExcursao {
 
 					Excursao excursao = new Excursao(id, preco, vagas);
 					popupMenuAbrir.removeAll();
-					if (arquivoExiste()) {
-						FileWriter arq = new FileWriter(".\\excursoes.txt", true);
-						arq.write(Integer.toString(id) + "\n");
-						arq.close();
-					} else {
-						File arquivo = new File(new File(".\\excursoes.txt").getCanonicalPath());
-						FileWriter arq = new FileWriter(".\\excursoes.txt", true);
-						arq.write(Integer.toString(id) + "\n");
-						arq.close();
-					}
 					carregarItensMenu();
+					textArea.setText("");
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage());
+					JOptionPane.showMessageDialog(null, "Insira um número válido.");
 				}
 			}
 		});
@@ -160,17 +162,16 @@ public class APPExcursao {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String cpf, nome;
-						cpf = JOptionPane.showInputDialog("Digite seu CPF:");
-						nome = JOptionPane.showInputDialog("Digite seu nome:");
-					
-					if ((cpf != null && !cpf.isBlank()) && (nome !=  null && !nome.isBlank())) {
+					cpf = JOptionPane.showInputDialog("Digite seu CPF:");
+					nome = JOptionPane.showInputDialog("Digite seu nome:");
+
+					if ((cpf != null && !cpf.isBlank()) && (nome != null && !nome.isBlank())) {
 						excursao.criarReserva(cpf, nome);
-						label.setText("Valor total: " + excursao.calcularValorTotal());
-						label_2.setText("Total de reservas: " + excursao.tamanho());
 						JOptionPane.showMessageDialog(null, "Reserva realizada com sucesso!");
+						setarLabels();
 					} else {
-	                    throw new IllegalArgumentException("CPF e/ou nome não podem ser vazios.");
-	                }	
+						throw new IllegalArgumentException("CPF e/ou nome não podem ser vazios.");
+					}
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -195,8 +196,7 @@ public class APPExcursao {
 						try {
 							String cpf = JOptionPane.showInputDialog("Digite o cpf das reservas que deseja cancelar:");
 							excursao.cancelarReserva(cpf);
-							label_2.setText("Total de reservas: " + excursao.tamanho());
-							label.setText("Valor total: " + excursao.calcularValorTotal());
+							setarLabels();
 						} catch (Exception ex) {
 							JOptionPane.showMessageDialog(null, ex.getMessage());
 						}
@@ -208,8 +208,7 @@ public class APPExcursao {
 							String cpf = JOptionPane.showInputDialog("Digite o cpf da reserva que deseja cancelar:");
 							String nome = JOptionPane.showInputDialog("Digite o  nome da reserva que deseja cancelar:");
 							excursao.cancelarReserva(cpf, nome);
-							label_2.setText("Total de reservas: " + excursao.tamanho());
-							label.setText("Valor total: " + excursao.calcularValorTotal());
+							setarLabels();
 						} catch (Exception ex) {
 							JOptionPane.showMessageDialog(null, ex.getMessage());
 						}
@@ -297,15 +296,14 @@ public class APPExcursao {
 		label_2 = new JLabel();
 		label_2.setBounds(10, 76, 288, 20);
 		frame.getContentPane().add(label_2);
-		
-		
+
 		button_4 = new JButton("Listar todos");
 		button_4.setFont(new Font("Century", Font.PLAIN, 12));
 		button_4.setEnabled(false);
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					ArrayList<String> listaTodos= excursao.listarReservasPorNome("");
+					ArrayList<String> listaTodos = excursao.listarReservasPorNome("");
 					textArea.setText("");
 					for (String s : listaTodos)
 						textArea.append(s + "\n");
@@ -314,7 +312,7 @@ public class APPExcursao {
 				}
 			}
 		});
-			
+
 		button_4.setEnabled(false);
 		button_4.setBounds(10, 178, 139, 23);
 		frame.getContentPane().add(button_4);
