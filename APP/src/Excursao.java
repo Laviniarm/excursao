@@ -12,7 +12,7 @@ public class Excursao {
 
 	public Excursao(int id, double preco, int vagas) throws Exception {
 		if ((vagas <= 0) || (id <= 0) || (preco <= 0)) {
-			throw new Exception("Os valores de id, preco e vagas devem ser maior 0!");
+			throw new Exception("Os valores de id, preco e vagas devem ser maiores que 0!");
 		}
 		this.id = id;
 		this.preco = preco;

@@ -147,6 +147,13 @@ public class APPExcursao {
 					popupMenuAbrir.removeAll();
 					carregarItensMenu();
 					textArea.setText("");
+					label_1.setText("");
+					label_2.setText("");
+					label.setText("");
+					button_1.setEnabled(false);
+					button_2.setEnabled(false);
+					button_6.setEnabled(false);
+					button_4.setEnabled(false);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Insira um número válido.");
 				}
