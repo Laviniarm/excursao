@@ -1,0 +1,5 @@
+Valor por pessoa: 1.0
+Quantidade de vagas: 2
+Reservas:
+111/aaa
+222/bbb
